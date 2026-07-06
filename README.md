@@ -6,7 +6,7 @@ A rate-limited URL shortener built with Django REST Framework and React, featuri
 
 - **Backend:** Django, Django REST Framework, SQLite
 - **Frontend:** React (Vite), styled-components, Chart.js
-- **Infra:** Docker, Docker Compose
+
 
 
 ## Running the Project
@@ -23,30 +23,29 @@ docker compose up --build
 - **Algorithm:** Fixed Window
 - **Rule:** max 5 shorten-requests per IP every 60 seconds
 - **How it works:** a decorator (`@rate_limit(max_requests=5, window_seconds=60)`) checks
-  each IP's request count using Django's cache (fast, auto-expiring) before the view runs.
+  each IP's request count using Django's cache before the view runs.
 - **If limit is hit:** returns `429`, with a JSON body showing `retry_after_seconds`, plus
   a `Retry-After` header.
 - **Tradeoff:** Fixed Window can allow a short burst near the edge of a window. A Sliding
-  Window would avoid this but adds complexity — not needed at this scale.
+  Window would avoid this but adds complexity.
 
 ## Design Decisions
 
 - **Random aliases, not hashed.** See explanation below.
-- **No login/auth.** All URLs and stats are public — matches the assessment's scope.
+- **No login/auth.** All URLs and stats are public.
 - **Polling, not real-time push.** Chart re-fetches every 10s with `setInterval` instead
-  of using WebSockets — simpler, good enough for this scope.
+  of using WebSockets is simplier.
 - **Zero-filled stats.** The 7-day stats always return all 7 days, even ones with 0 clicks,
   so the chart never has gaps.
 
 ## Why random aliases instead of hashing?
 
-A hash-based alias (e.g. hashing the URL with MD5/SHA) always produces the **same** alias
-for the **same** URL. That sounds convenient, but it means shortening one URL twice would
-just return the same link twice — no way to track two separate shares (e.g. one in an
-email, one on social media) separately.
+A hash-based alias always produces the same alias
+for the same URL. That sounds convenient, but it means shortening one URL twice would
+just return the same link twice and no way to track two separate shares separately.
 
 Using `secrets.choice()` generates a random alias each time, so every shortened link gets
-its own independent click history — better suited to this project's analytics focus.
+its own independent click history and it is better suited to this project's analytics focus.
 `secrets` (not `random`) is used specifically because it's cryptographically secure —
 aliases can't be predicted or guessed.
 
