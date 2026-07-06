@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export default function CountdownTimer({ seconds, onComplete }) {
   const [remaining, setRemaining] = useState(seconds);
@@ -10,7 +10,7 @@ export default function CountdownTimer({ seconds, onComplete }) {
     }
 
     const timer = setTimeout(() => setRemaining((r) => r - 1), 1000);
-    return () => clearTimeout(timer); 
+    return () => clearTimeout(timer);
   }, [remaining, onComplete]);
 
   return <p>Try again in {remaining}s...</p>;

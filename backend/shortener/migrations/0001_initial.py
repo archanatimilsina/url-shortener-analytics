@@ -8,25 +8,47 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='ShortURL',
+            name="ShortURL",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('alias', models.CharField(max_length=6, unique=True)),
-                ('original_url', models.URLField(max_length=2000)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("alias", models.CharField(max_length=6, unique=True)),
+                ("original_url", models.URLField(max_length=2000)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
             ],
         ),
         migrations.CreateModel(
-            name='ClickEvent',
+            name="ClickEvent",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('clicked_at', models.DateTimeField(auto_now_add=True)),
-                ('short_url', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='clicks', to='shortener.shorturl')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("clicked_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "short_url",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="clicks",
+                        to="shortener.shorturl",
+                    ),
+                ),
             ],
         ),
     ]

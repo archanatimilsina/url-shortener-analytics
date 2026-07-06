@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 function URLList({ urls, selectedAlias, onSelect }) {
   if (urls.length === 0) {
@@ -10,11 +10,21 @@ function URLList({ urls, selectedAlias, onSelect }) {
       {urls.map((u) => {
         const isOpen = u.alias === selectedAlias;
         return (
-          <ListItem key={u.alias} onClick={() => onSelect(isOpen ? null : u.alias)}>
+          <ListItem
+            key={u.alias}
+            onClick={() => onSelect(isOpen ? null : u.alias)}
+          >
             <Row>
               <Alias>{u.alias}</Alias>
               <Chevron $open={isOpen}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
                   <path d="M6 9l6 6 6-6" />
                 </svg>
               </Chevron>
@@ -59,7 +69,7 @@ const Row = styled.div`
 `;
 
 const Alias = styled.span`
-  font-family: 'SF Mono', ui-monospace, monospace;
+  font-family: "SF Mono", ui-monospace, monospace;
   font-size: 0.85rem;
   font-weight: 600;
   color: rgb(58, 54, 46);
@@ -68,7 +78,7 @@ const Alias = styled.span`
 const Chevron = styled.span`
   display: flex;
   color: rgb(150, 145, 130);
-  transform: rotate(${(props) => (props.$open ? '180deg' : '0deg')});
+  transform: rotate(${(props) => (props.$open ? "180deg" : "0deg")});
   transition: transform 0.15s ease;
 `;
 

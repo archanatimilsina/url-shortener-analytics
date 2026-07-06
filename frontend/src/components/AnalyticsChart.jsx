@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import styled from 'styled-components';
+import { useState, useEffect, useCallback } from "react";
+import styled from "styled-components";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,11 +8,18 @@ import {
   LineElement,
   Tooltip,
   Legend,
-} from 'chart.js';
-import { Line } from 'react-chartjs-2';
-import useApi from '../hooks/api';
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+import useApi from "../hooks/api";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Legend,
+);
 
 function AnalyticsChart({ alias }) {
   const [stats, setStats] = useState([]);
@@ -25,16 +32,15 @@ function AnalyticsChart({ alias }) {
     }
   }, [get, alias]);
 
-
-useEffect(() => {
-  fetchStats(); 
-
-  const intervalId = setInterval(() => {
+  useEffect(() => {
     fetchStats();
-  }, 10000); 
 
-  return () => clearInterval(intervalId); 
-}, [fetchStats]);
+    const intervalId = setInterval(() => {
+      fetchStats();
+    }, 10000);
+
+    return () => clearInterval(intervalId);
+  }, [fetchStats]);
 
   const chartData = {
     labels: stats.map((s) => s.date),
@@ -42,12 +48,12 @@ useEffect(() => {
       {
         label: `Clicks — ${alias}`,
         data: stats.map((s) => s.clicks),
-        borderColor: 'rgb(90, 86, 74)',
-        backgroundColor: 'rgba(90, 86, 74, 0.08)',
+        borderColor: "rgb(90, 86, 74)",
+        backgroundColor: "rgba(90, 86, 74, 0.08)",
         tension: 0.3,
         fill: true,
         pointRadius: 4,
-        pointBackgroundColor: 'rgb(90, 86, 74)',
+        pointBackgroundColor: "rgb(90, 86, 74)",
       },
     ],
   };
@@ -57,26 +63,27 @@ useEffect(() => {
     plugins: {
       legend: { display: false },
       tooltip: {
-        backgroundColor: 'rgb(58, 54, 46)',
-        titleColor: 'rgb(246, 245, 240)',
-        bodyColor: 'rgb(246, 245, 240)',
+        backgroundColor: "rgb(58, 54, 46)",
+        titleColor: "rgb(246, 245, 240)",
+        bodyColor: "rgb(246, 245, 240)",
         padding: 10,
         cornerRadius: 4,
         displayColors: false,
         callbacks: {
-          label: (context) => `${context.parsed.y} click${context.parsed.y === 1 ? '' : 's'}`,
+          label: (context) =>
+            `${context.parsed.y} click${context.parsed.y === 1 ? "" : "s"}`,
         },
       },
     },
     scales: {
       x: {
         grid: { display: false },
-        ticks: { color: 'rgb(150, 145, 130)', font: { size: 11 } },
+        ticks: { color: "rgb(150, 145, 130)", font: { size: 11 } },
       },
       y: {
         beginAtZero: true,
-        ticks: { stepSize: 1, color: 'rgb(150, 145, 130)', font: { size: 11 } },
-        grid: { color: 'rgb(230, 227, 218)' },
+        ticks: { stepSize: 1, color: "rgb(150, 145, 130)", font: { size: 11 } },
+        grid: { color: "rgb(230, 227, 218)" },
       },
     },
   };
@@ -86,7 +93,7 @@ useEffect(() => {
       <Header>
         <Title>Clicks over the last 7 days</Title>
         <RefreshButton onClick={fetchStats} disabled={loading}>
-          {loading ? 'Refreshing...' : 'Refresh'}
+          {loading ? "Refreshing..." : "Refresh"}
         </RefreshButton>
       </Header>
 
@@ -118,7 +125,7 @@ const Header = styled.div`
 `;
 
 const Title = styled.h3`
-  font-family: Georgia, 'Iowan Old Style', ui-serif, serif;
+  font-family: Georgia, "Iowan Old Style", ui-serif, serif;
   font-size: 1.05rem;
   font-weight: 500;
   color: rgb(58, 54, 46);

@@ -1,21 +1,21 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-import CountdownTimer from './CountdownTimer';
-import useApi from '../hooks/api';
+import { useState } from "react";
+import styled from "styled-components";
+import CountdownTimer from "./CountdownTimer";
+import useApi from "../hooks/api";
 
 const BACKEND_ORIGIN = import.meta.env.VITE_API_BASE;
 
 function isValidUrl(value) {
   try {
     const parsed = new URL(value);
-    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
   } catch {
     return false;
   }
 }
 
 function URLShortenerForm({ onNewUrl }) {
-  const [url, setUrl] = useState('');
+  const [url, setUrl] = useState("");
   const [shortUrl, setShortUrl] = useState(null);
   const [retryAfter, setRetryAfter] = useState(null);
   const [copied, setCopied] = useState(false);
@@ -30,17 +30,21 @@ function URLShortenerForm({ onNewUrl }) {
 
     const trimmed = url.trim();
     if (!isValidUrl(trimmed)) {
-      setValidationError('Enter a valid url, starting with http:// or https://');
+      setValidationError(
+        "Enter a valid url, starting with http:// or https://",
+      );
       return;
     }
     setValidationError(null);
 
-    const { success, status, data } = await post('/api/shorten/', { url: trimmed });
+    const { success, status, data } = await post("/api/shorten/", {
+      url: trimmed,
+    });
     if (status === 429) {
       setRetryAfter(data.retry_after_seconds);
     } else if (success) {
       setShortUrl(data.alias);
-      setUrl('');
+      setUrl("");
       setCopied(false);
       setCopyError(null);
       onNewUrl();
@@ -55,14 +59,14 @@ function URLShortenerForm({ onNewUrl }) {
       setCopyError(null);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      setCopyError('Copy failed — select and copy the link manually.');
+      setCopyError("Copy failed — select and copy the link manually.");
       setTimeout(() => setCopyError(null), 3000);
     }
   }
 
   function handleFollow() {
     if (!fullShortUrl) return;
-    window.open(fullShortUrl, '_blank', 'noopener,noreferrer');
+    window.open(fullShortUrl, "_blank", "noopener,noreferrer");
   }
 
   return (
@@ -77,27 +81,38 @@ function URLShortenerForm({ onNewUrl }) {
           placeholder="Paste a long URL"
         />
         <Button type="submit" disabled={loading || retryAfter > 0}>
-          {loading ? 'Shortening...' : 'Shorten'}
+          {loading ? "Shortening..." : "Shorten"}
         </Button>
       </InputRow>
 
       {validationError && <Toast>{validationError}</Toast>}
 
       {retryAfter > 0 && (
-        <CountdownTimer seconds={retryAfter} onComplete={() => setRetryAfter(null)} />
+        <CountdownTimer
+          seconds={retryAfter}
+          onComplete={() => setRetryAfter(null)}
+        />
       )}
 
       {fullShortUrl && (
         <ShortUrlBox>
           <ShortUrlText>{fullShortUrl}</ShortUrlText>
           <IconGroup>
-            <IconButton type="button" onClick={handleFollow} aria-label="Open short url">
+            <IconButton
+              type="button"
+              onClick={handleFollow}
+              aria-label="Open short url"
+            >
               <FollowIcon />
               <Tooltip>Follow url</Tooltip>
             </IconButton>
-            <IconButton type="button" onClick={handleCopy} aria-label="Copy short url">
+            <IconButton
+              type="button"
+              onClick={handleCopy}
+              aria-label="Copy short url"
+            >
               {copied ? <CheckIcon /> : <CopyIcon />}
-              <Tooltip>{copied ? 'Copied' : 'Copy'}</Tooltip>
+              <Tooltip>{copied ? "Copied" : "Copy"}</Tooltip>
             </IconButton>
           </IconGroup>
         </ShortUrlBox>
@@ -111,7 +126,14 @@ function URLShortenerForm({ onNewUrl }) {
 
 function CopyIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
       <rect x="9" y="9" width="13" height="13" rx="2" />
       <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
     </svg>
@@ -120,7 +142,14 @@ function CopyIcon() {
 
 function CheckIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
       <path d="M20 6 9 17l-5-5" />
     </svg>
   );
@@ -128,7 +157,14 @@ function CheckIcon() {
 
 function FollowIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
       <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
       <path d="M15 3h6v6" />
       <path d="M10 14 21 3" />
@@ -210,7 +246,7 @@ const ShortUrlBox = styled.div`
 `;
 
 const ShortUrlText = styled.span`
-  font-family: 'SF Mono', ui-monospace, monospace;
+  font-family: "SF Mono", ui-monospace, monospace;
   font-size: 0.85rem;
   color: rgb(90, 86, 74);
   word-break: break-all;
@@ -257,7 +293,9 @@ const Tooltip = styled.span`
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.12s ease, transform 0.12s ease;
+  transition:
+    opacity 0.12s ease,
+    transform 0.12s ease;
 `;
 
 const ErrorText = styled.p`

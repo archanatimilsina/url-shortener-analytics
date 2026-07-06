@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
-import styled from 'styled-components';
-import URLShortenerForm from '../src/components/URLShortenerForm';
-import URLList from '../src/components/URLList';
-import AnalyticsChart from '../src/components/AnalyticsChart';
-import useApi from '../src/hooks/api';
+import { useState, useEffect, useCallback } from "react";
+import styled from "styled-components";
+import URLShortenerForm from "../src/components/URLShortenerForm";
+import URLList from "../src/components/URLList";
+import AnalyticsChart from "../src/components/AnalyticsChart";
+import useApi from "../src/hooks/api";
 
 function App() {
   const [urls, setUrls] = useState([]);
@@ -11,7 +11,7 @@ function App() {
   const { get, loading: listLoading } = useApi();
 
   const fetchUrls = useCallback(async () => {
-    const { success, data } = await get('api/urls/');
+    const { success, data } = await get("api/urls/");
     if (success) {
       setUrls(data);
     }
@@ -61,7 +61,9 @@ function App() {
           ) : (
             <EmptyState>
               <EmptyTitle>No link selected</EmptyTitle>
-              <EmptyText>Choose a link on the left to see its click activity.</EmptyText>
+              <EmptyText>
+                Choose a link on the left to see its click activity.
+              </EmptyText>
             </EmptyState>
           )}
         </DetailPane>
@@ -74,7 +76,10 @@ const Page = styled.div`
   max-width: 1070px;
   margin: 0 auto;
   padding: 3rem 1.5rem;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
   color: rgb(122, 117, 103);
   background: rgb(246, 245, 240);
   min-height: 100vh;
@@ -87,7 +92,7 @@ const Header = styled.div`
 const Title = styled.h1`
   position: relative;
   display: inline-block;
-  font-family: Georgia, 'Iowan Old Style', ui-serif, serif;
+  font-family: Georgia, "Iowan Old Style", ui-serif, serif;
   font-size: 2rem;
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -147,7 +152,7 @@ const EmptyState = styled.div`
 `;
 
 const EmptyTitle = styled.p`
-  font-family: Georgia, 'Iowan Old Style', ui-serif, serif;
+  font-family: Georgia, "Iowan Old Style", ui-serif, serif;
   font-weight: 500;
   font-size: 1rem;
   color: rgb(80, 76, 65);
