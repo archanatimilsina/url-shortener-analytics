@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
-
+import dj_database_url
+import os
+from dotenv import load_dotenv
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,10 +28,11 @@ SECRET_KEY = "django-insecure-apbto967ohw_j&$ohq)!s*n4jn_ocnjn&_!yvne+k9u^1fa=$&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", 'backend']
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", 'backend','https://url-shortener-analytics-dzy3.onrender.com']
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://url-shortener-analytics-six.vercel.app/"
 ]
 
 # Application definition
@@ -79,11 +83,22 @@ WSGI_APPLICATION = "core.wsgi.application"
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,
+    )
 }
+DATABASES['default']['OPTIONS'] = {'options': '-c search_path=url_shortener'}
+
+
+
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 
 
 # Password validation
