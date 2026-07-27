@@ -4,6 +4,7 @@ import URLShortenerForm from "../src/components/URLShortenerForm";
 import URLList from "../src/components/URLList";
 import AnalyticsChart from "../src/components/AnalyticsChart";
 import useApi from "../src/hooks/api";
+const API = import.meta.env.VITE_API_BASE;
 
 function App() {
   const [urls, setUrls] = useState([]);
